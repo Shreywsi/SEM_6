@@ -7,18 +7,21 @@ long long int sqrtLL(long long int n) {
     while (low <= high) {
         long long int mid = low + (high - low) / 2;
 
-        if (mid * mid <= n) {
+        if (mid <= n / mid) {   
             ans = mid;
             low = mid + 1;
-        } else {
+        } 
+        else {
             high = mid - 1;
         }
     }
-    return ans;   // integer square root
+    return ans;
 }
+
 
 int main() {
     long long int n;
+    cout<<"enter the number: ";
     cin >> n;
 
     cout << sqrtLL(n);
