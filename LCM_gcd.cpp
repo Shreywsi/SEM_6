@@ -1,0 +1,29 @@
+//LCM(a,b) = (a × b) / GCD(a,b)
+#include<iostream>
+using namespace std;
+int euclidgcd(int a,int b)
+{
+    if(b==0)
+        return a;
+    int n=a%b;
+    if(n==0)
+        return b;
+    return euclidgcd(b,n);
+
+}
+int main()
+{
+    int a,b;
+    cout<<"enter the first number: ";
+    cin>> a;
+    cout<<"enter the second number: ";
+    cin>> b;
+    if(a<b)
+    {
+        swap(a,b);
+    }
+    int ans=euclidgcd(a,b);
+    int lcm=(a*b)/ans;
+    cout<<"the lcm of "<<a<<" and "<<b<<" is "<<lcm;
+    return 0;
+}
