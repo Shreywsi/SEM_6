@@ -1,0 +1,52 @@
+import numpy as np
+import time
+
+class SigmoidNeuron:
+
+    def __init__(self, n_features):
+        self.w = np.zeros(n_features)
+        self.b = 0
+        self.lr = 0.000001
+        self.epochs = 5000
+
+    def sigmoid(self, z):
+        z = np.clip(z, -500, 500)
+        return 1 / (1 + np.exp(-z))
+
+    def predict(self, X):
+        return self.sigmoid(np.dot(X, self.w) + self.b)
+
+    def fit(self, X, y):
+        n = len(X)
+        for _ in range(self.epochs):
+            y_pred = self.predict(X)
+            dw = (1/n) * np.dot(X.T, (y_pred - y))
+            db = (1/n) * np.sum(y_pred - y)
+            self.w -= self.lr * dw
+            self.b -= self.lr * db
+
+X = np.array([
+    [25, 30000],
+    [35, 60000],
+    [45, 80000],
+    [20, 20000],
+    [50, 90000]
+])
+
+y = np.array([0, 1, 1, 0, 1])
+
+X_norm = (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
+
+model1 = SigmoidNeuron(2)
+start = time.time()
+model1.fit(X, y)
+raw_time = time.time() - start
+
+model2 = SigmoidNeuron(2)
+start = time.time()
+model2.fit(X_norm, y)
+norm_time = time.time() - start
+
+print("Training Time Comparison\n")
+print("Raw Data Training Time:", raw_time)
+print("Normalized Data Training Time:", norm_time)
