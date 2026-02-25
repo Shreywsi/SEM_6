@@ -1,0 +1,43 @@
+import numpy as np
+class SigmoidNeuron:
+
+    def __init__(self, weights, bias):
+        self.w = np.array(weights)
+        self.b = bias
+
+    def sigmoid(self, z):
+        return 1 / (1 + np.exp(-z))
+
+    # forward pass
+    def predict(self, x):
+        x = np.array(x)
+        z = 0
+        for i in range(len(x)):
+            z += self.w[i] * x[i]
+        
+        z += self.b
+        return self.sigmoid(z)
+
+data = [
+    [25, 30000, 2],
+    [40, 80000, 4],
+    [30, 50000, 3],
+    [50, 90000, 5]
+]
+weights = [0.05, 0.00005, 0.3]
+bias = -5
+
+neuron = SigmoidNeuron(weights, bias)
+print("House Buying Probability:\n")
+
+for person in data:
+    prob = neuron.predict(person)
+    print(f"Input {person} -> Probability: {prob:.4f}")
+
+
+House Buying Probability:
+
+Input [25, 30000, 2] -> Probability: 0.1611
+Input [40, 80000, 4] -> Probability: 0.9002
+Input [30, 50000, 3] -> Probability: 0.4750
+Input [50, 90000, 5] -> Probability: 0.9707
