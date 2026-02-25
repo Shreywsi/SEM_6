@@ -1,0 +1,47 @@
+import numpy as np
+
+class SigmoidNeuron:
+
+    def __init__(self):
+        self.w = np.zeros(2)
+        self.b = 0
+        self.lr = 0.1
+        self.epochs = 10000
+
+    def sigmoid(self, z):
+        return 1 / (1 + np.exp(-z))
+
+    def predict(self, X):
+        return self.sigmoid(np.dot(X, self.w) + self.b)
+
+    def fit(self, X, y):
+        n = len(X)
+
+        for _ in range(self.epochs):
+            y_pred = self.predict(X)
+
+            dw = (1/n) * np.dot(X.T, (y_pred - y))
+            db = (1/n) * np.sum(y_pred - y)
+
+            self.w -= self.lr * dw
+            self.b -= self.lr * db
+
+
+# XOR dataset
+X = np.array([
+    [0,0],
+    [0,1],
+    [1,0],
+    [1,1]
+])
+
+y = np.array([0,1,1,0])
+
+# Train neuron
+model = SigmoidNeuron()
+model.fit(X, y)
+
+# Predictions
+print("Predictions:")
+for x in X:
+    print(x, "->", model.predict(x))
