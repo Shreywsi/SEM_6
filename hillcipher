@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+string ct="";
+void enc(string pt, int key[2][2])
+{
+    int i;
+    if(pt.length() % 2!=0)
+    {
+        pt+="X";
+    } 
+    
+    for(int i = 0; i < pt.length(); i++)
+        pt[i] = toupper(pt[i]);
+    for(i=0;i<pt.length();i=i+2)
+    {
+        int a = pt[i] - 'A';
+        int b = pt[i+1] - 'A';
+        char c1=(key[0][0]*a+key[0][1]*b)%26;
+        char c2=(key[1][0]*a+key[1][1]*b)%26;
+        ct += char(c1 + 'A');
+        ct += char(c2 + 'A');
+    }
+    
+    cout<<"encrypted text: "<<ct;
+}
+void dec(string ct, int k[2][2])
+{
+    int det = (k[0][0]*k[1][1] - k[0][1]*k[1][0]) % 26;
+    det = (det + 26) % 26;
+
+    int detinv = -1;
+
+    // find inverse of determinant
+    for(int i = 1; i < 26; i++) {
+        if((det * i) % 26 == 1) {
+            detinv = i;
+            break;
+        }
+    }
+
+    if(detinv == -1) {
+        cout << "No inverse exists\n";
+        return;
+    }
+
+    // adjugate
+    int adjk[2][2];
+
+    adjk[0][0] = k[1][1];
+    adjk[1][1] = k[0][0];
+    adjk[0][1] = (26 - k[0][1]) % 26;
+    adjk[1][0] = (26 - k[1][0]) % 26;
+
+    string ppt = "";
+
+    for(int i = 0; i < ct.length(); i += 2)
+    {
+        int a = ct[i] - 'A';
+        int b = ct[i+1] - 'A';
+
+        int c1 = (detinv * (adjk[0][0]*a + adjk[0][1]*b)) % 26;
+        int c2 = (detinv * (adjk[1][0]*a + adjk[1][1]*b)) % 26;
+
+        ppt += char(c1 + 'A');
+        ppt += char(c2 + 'A');
+    }
+
+    cout << "Decrypted text: " << ppt;
+}
+int main()
+{
+    string pt="";
+    int key[2][2];
+    for(int i=0;i<2;i++)
+    {
+        for(int j=0;j<2;j++)
+        {
+            cout<<"enter the key value";
+            cin>>key[i][j];
+        }
+    }
+    cout<<"enter the plain text";
+    cin>>pt;
+    enc(pt,key);
+    cout<<endl;
+    dec(ct,key);
+}
