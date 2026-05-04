@@ -1,0 +1,91 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Function to encrypt
+string encryptRailFence(string pt, int k) {
+    string ct = "";
+    int l = pt.size();
+    vector<vector<char>> mat(k, vector<char>(l, '\n')); 
+    int row = 0;
+    bool down = true; 
+
+    for (int col = 0; col < l; col++) {
+        mat[row][col] = pt[col];
+
+        if (down)
+            row++;
+        else
+            row--;
+
+        if (row == 0 || row == k - 1) 
+            down = !down;
+    }
+
+    for (int i = 0; i < k; i++) {
+        for (int j = 0; j < l; j++) {
+            if (mat[i][j] != '\n') {
+                ct += mat[i][j];
+            }
+        }
+    }
+
+    return ct;
+}
+
+// Function to decrypt
+string decryptRailFence(string ct, int k) {
+    int l = ct.size();
+    vector<vector<char>> mat(k, vector<char>(l, '\n'));
+    vector<vector<bool>> mark(k, vector<bool>(l, false));
+
+    // Step 1: mark zigzag positions
+    int row = 0;
+    bool down = true;
+    for (int col = 0; col < l; col++) {
+        mark[row][col] = true;
+        if (down) row++; else row--;
+        if (row == 0 || row == k - 1) down = !down;
+    }
+
+    // Step 2: fill characters row by row
+    int idx = 0;
+    for (int i = 0; i < k; i++) {
+        for (int j = 0; j < l; j++) {
+            if (mark[i][j])
+                mat[i][j] = ct[idx++];
+        }
+    }
+
+    // Step 3: read zigzag to get plaintext
+    string pt = "";
+    row = 0;
+    down = true;
+    for (int col = 0; col < l; col++) {
+        pt += mat[row][col];
+        if (down) row++; else row--;
+        if (row == 0 || row == k - 1) down = !down;
+    }
+
+    return pt;
+}
+
+int main() {
+    string pt, ct;
+    int k;
+    
+    cout << "Enter the plain text: ";
+    cin >> pt;
+    cout << "Enter the number of rows: ";
+    cin >> k;
+
+    // Encrypt
+    ct = encryptRailFence(pt, k);
+    cout << "Encrypted text: " << ct << endl;
+
+    // Decrypt
+    string decrypted = decryptRailFence(ct, k);
+    cout << "Decrypted text: " << decrypted << endl;
+
+    return 0;
+}
