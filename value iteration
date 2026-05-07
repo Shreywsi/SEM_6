@@ -1,0 +1,77 @@
+import numpy as np
+
+# Grid size
+rows, cols = 3, 3
+
+# Rewards matrix
+rewards = np.array([
+    [0, 0, 0],
+    [0, -10, 0],
+    [0, 0, 10]
+])
+
+# Parameters
+gamma = 0.9
+theta = 0.001
+
+# Initialize value table
+V = np.zeros((rows, cols))
+
+# Actions
+actions = {
+    "up": (-1, 0),
+    "down": (1, 0),
+    "left": (0, -1),
+    "right": (0, 1)
+}
+
+# Terminal states
+terminal_states = [(1, 1), (2, 2)]
+
+def get_next_state(i, j, action):
+    di, dj = action
+    ni, nj = i + di, j + dj
+
+    # Stay inside grid
+    if ni < 0 or ni >= rows or nj < 0 or nj >= cols:
+        return i, j
+
+    return ni, nj
+
+# VALUE ITERATION
+while True:
+    delta = 0
+    new_V = V.copy()
+
+    for i in range(rows):
+        for j in range(cols):
+
+            # Skip terminal states
+            if (i, j) in terminal_states:
+                continue
+
+            action_values = []
+
+            for action in actions.values():
+                ni, nj = get_next_state(i, j, action)
+
+                reward = rewards[ni][nj]
+
+                value = reward + gamma * V[ni][nj]
+
+                action_values.append(value)
+
+            best_value = max(action_values)
+
+            delta = max(delta, abs(best_value - V[i][j]))
+
+            new_V[i][j] = best_value
+
+    V = new_V
+
+    # Stop when values converge
+    if delta < theta:
+        break
+
+print("Optimal Value Function:\n")
+print(np.round(V, 2))
