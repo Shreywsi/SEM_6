@@ -5,9 +5,8 @@ rows, cols = 3, 3
 
 # Rewards matrix
 rewards = np.array([
-    [0, 0, 0],
-    [0, -10, 0],
-    [0, 0, 10]
+    [0,   0, 100],
+    [0,   0,   0]
 ])
 
 # Parameters
