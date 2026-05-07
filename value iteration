@@ -1,7 +1,7 @@
 import numpy as np
 
 # Grid size
-rows, cols = 3, 3
+rows, cols = 2, 3
 
 # Rewards matrix
 rewards = np.array([
