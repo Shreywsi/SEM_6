@@ -1,0 +1,30 @@
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    int a, b;
+
+    cout << "Enter two numbers: ";
+    cin >> a >> b;
+
+    int lcm = 1;
+
+    for(int i = 2; i <= a || i <= b; i++)
+    {
+        while(a % i == 0 || b % i == 0)
+        {
+            if(a % i == 0)
+                a /= i;
+
+            if(b % i == 0)
+                b /= i;
+
+            lcm *= i;
+        }
+    }
+
+    cout << "LCM = " << lcm;
+
+    return 0;
+}
