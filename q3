@@ -1,29 +1,25 @@
-#include <iostream>
+#include<bits/stdc++.h>
 using namespace std;
-
-long long int sqrtLL(long long int n) {
-    long long int low = 0, high = n, ans = 0;
-
-    while (low <= high) {
-        long long int mid = low + (high - low) / 2;
-
-        if (mid <= n / mid) {   
-            ans = mid;
-            low = mid + 1;
-        } 
-        else {
-            high = mid - 1;
+int main()
+{
+    long long n;
+    cout<<"enter";
+    cin>>n;
+    int ans;
+    long long u=n,l=0,mid;
+    while(l<=u)
+    {
+        mid=(l+u)/2;
+        if(mid<=n/mid)
+        {
+            ans=mid;
+            l=mid+1;
+        }
+        else
+        {
+            u=mid-1;
         }
     }
-    return ans;
-}
-
-
-int main() {
-    long long int n;
-    cout<<"enter the number: ";
-    cin >> n;
-
-    cout << sqrtLL(n);
+    cout << "Square root = " << ans;
     return 0;
 }
