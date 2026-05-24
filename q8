@@ -1,0 +1,30 @@
+#include<iostream>
+using namespace std;
+
+int main()
+{
+    string s;
+
+    cout << "Enter string: ";
+    cin >> s;
+
+    cout << "\nAND with 127:\n";
+    for(int i = 0; i < s.size(); i++)
+    {
+        cout << (s[i] & 127) << " ";
+    }
+
+    cout << "\n\nOR with 127:\n";
+    for(int i = 0; i < s.size(); i++)
+    {
+        cout << (s[i] | 127) << " ";
+    }
+
+    cout << "\n\nXOR with 127:\n";
+    for(int i = 0; i < s.size(); i++)
+    {
+        cout << (s[i] ^ 127) << " ";
+    }
+
+    return 0;
+}
