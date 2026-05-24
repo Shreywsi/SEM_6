@@ -1,53 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-string decryptRailFence(string cipher, int key) {
-    int n = cipher.size();
+void encryptRailFence(string text, int key)
+{
+    vector<string> rail(key);
 
-    vector<vector<char>> rail(key, vector<char>(n, '\n'));
+    int dir = 1, row = 0;
 
-    // Step 1: mark zigzag pattern
-    bool dir_down = false;
-    int row = 0, col = 0;
+    for (char c : text)
+    {
+        rail[row] += c;
 
-    for (int i = 0; i < n; i++) {
+        row += dir;
+
         if (row == 0 || row == key - 1)
-            dir_down = !dir_down;
-
-        rail[row][col++] = '*';
-
-        row += dir_down ? 1 : -1;
+            dir = -dir;
     }
 
-    // Step 2: fill ciphertext in marked positions
-    int index = 0;
-    for (int i = 0; i < key; i++) {
-        for (int j = 0; j < n; j++) {
-            if (rail[i][j] == '*' && index < n)
-                rail[i][j] = cipher[index++];
-        }
-    }
+    string cipher = "";
+    for (string r : rail)
+        cipher += r;
 
-    // Step 3: read in zigzag order
-    string result = "";
-    row = 0, col = 0;
-    dir_down = false;
-
-    for (int i = 0; i < n; i++) {
-        if (row == 0 || row == key - 1)
-            dir_down = !dir_down;
-
-        result += rail[row][col++];
-
-        row += dir_down ? 1 : -1;
-    }
-
-    return result;
+    cout << "Cipher Text: " << cipher << endl;
 }
 
-int main() {
-    string cipher = "HOLELWRDLO";
-    int key = 3;
+int main()
+{
+    string text;
+    int key;
 
-    cout << decryptRailFence(cipher, key);
+    cout << "Enter text: ";
+    cin >> text;
+
+    cout << "Enter key: ";
+    cin >> key;
+
+    encryptRailFence(text, key);
+
+    return 0;
 }
